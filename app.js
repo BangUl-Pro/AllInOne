@@ -10,7 +10,7 @@ app.get('/', function(req, res) {
 
 var io = require('socket.io').listen(server);
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://ironfactory:12345678@ds019481.mlab.com:19481/heroku_xh0brn68');
+mongoose.connect('mongodb://ironfactory:12345678@ds019471.mlab.com:19471/heroku_g4p0fmhc');
 var Schema = mongoose.Schema;
 var UserSchema = Schema({
   'user_id' : String,
