@@ -1,60 +1,132 @@
+var http = require('http');
 var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
-app.use('/users', users);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+var server = http.createServer(app).listen(process.env.PORT || 5000);
+app.get('/', function(req, res) {
+  console.log('실행');
 });
 
-// error handlers
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+var io = require('socket.io').listen(server);
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://ironfactory:12345678@ds019481.mlab.com:19481/heroku_xh0brn68');
+var Schema = mongoose.Schema;
+var UserSchema = Schema({
+  'user_id' : String,
+  'user_pw' : String,
+  'user_accessable' : Number
+});
+var UserModel = mongoose.model('user', UserSchema);
+
+io.on('connection', function(socket) {
+  socket.on('signUp', function(data) {
+    var id = data.id;
+    var pw = data.pw;
+    
+    console.log('회원 추가 데이터 ');
+    console.log('회원 추가 데이터 id = ' + id);
+    console.log('회원 추가 데이터 pw = ' + pw);
+    
+    if (!id || !pw) {
+      console.log('회원 추가 데이터 누락');
+      socket.emit('signUp', {
+        'code' : 300
+      });
+    } else {
+      var user = new UserModel({
+          'user_id' : id,
+          'user_pw' : pw,
+          'user_accessable' : 1
+          });
+      
+      user.save(function(err) {
+        if (err) {
+          console.log('회원 추가 DB 저장 에러 = ' + err);
+          socket.emit('signUp', {
+            'code' : 301
+          });
+        } else {
+          socket.emit('signUp', {
+            'code' : 200
+          });
+        }
+      });
+    }
+  });
+  
+  socket.on('login', function(data) {
+    var id = data.id;
+    var pw = data.pw;
+    
+    console.log('로그인 ');
+    console.log('로그인 id = ' + id);
+    console.log('로그인 pw = ' + pw);
+    
+    if (!id || !pw) {
+      console.log('로그인 데이터 누락');
+      socket.emit('login', {
+        'code' : 330
+      });
+    } else {
+      user.find({'user_id' : id, 'user_pw' : pw}, function(err) {
+        if (err) {
+          console.log('로그인 DB쿼리 에러 = ' + err);
+          socket.emit('login', {
+            'code' : 331
+          });
+        } else {
+          socket.emit('login', {
+            'code' : 200
+          });
+        }
+      });
+    }
+  });
+  
+  socket.on('getUsers', function(data) {
+    console.log('회원 리스트 로드');
+    UserModel.find({}, function(err, users) {
+      if (err) {
+        console.log('회원 리스트 로드 실패');
+        socket.emit('getUsers', {
+          'code' : 311
+        });
+      } else {
+        socket.emit('getUsers', {
+          'code' : 200,
+          'users' : users
+        });
+      }
     });
   });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+  
+  socket.on('setAccessable', function(data) {
+    var id = data.id;
+    var accessable = data.accessable;
+    
+    console.log('사용 권한 변경 ');
+    console.log('사용 권한 변경 id = ' + id);
+    console.log('사용 권한 변경 accessable = ' + accessable);
+    
+    if (!id || !accessable) {
+      console.log('사용 권한 변경 데이터 누락'); 
+      socket.emit('setAccessable', {
+        'code' : 320
+      });
+    } else {
+      UserModel.update({'user_id' : id}, {'user_accessable' : accessable}, function(err) {
+        if (err) {
+          console.log('사용 권한 변경 에러');
+          socket.emit('setAccessable', {
+            'code' : 321
+          });
+        } else {
+          socket.emit('setAccessable', {
+            'code' : 200
+          });
+        }
+      });
+    }
   });
 });
-
-
-module.exports = app;
