@@ -37,7 +37,7 @@ io.on('connection', function(socket) {
       var user = new UserModel({
           'user_id' : id,
           'user_pw' : pw,
-          'user_accessable' : 1
+          'user_accessable' : 2
           });
       
       user.save(function(err) {
