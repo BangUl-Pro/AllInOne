@@ -69,7 +69,7 @@ io.on('connection', function(socket) {
         'code' : 330
       });
     } else {
-      UserModel.find({'user_id' : id, 'user_pw' : pw}, function(err) {
+      UserModel.find({'user_id' : id, 'user_pw' : pw}, function(err, user) {
         if (err) {
           console.log('로그인 DB쿼리 에러 = ' + err);
           socket.emit('login', {
@@ -77,7 +77,8 @@ io.on('connection', function(socket) {
           });
         } else {
           socket.emit('login', {
-            'code' : 200
+            'code' : 200,
+            'user' : user
           });
         }
       });
