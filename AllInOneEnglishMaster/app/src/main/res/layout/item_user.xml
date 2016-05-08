@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="72dp">
+
+    <TextView
+        android:id="@+id/item_user_id"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        android:layout_weight="3"/>
+
+    <Switch
+        android:id="@+id/item_user_accessable"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textOn="On"
+        android:textOff="Off"
+        android:layout_weight="1"/>
+
+</LinearLayout>

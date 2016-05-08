@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/btn_menu_width"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/activity_tab_home"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/activity_tab_home_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_home_selected"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:id="@+id/activity_tab_home_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="홈" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_tab_study"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/activity_tab_study_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_home_selected"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:id="@+id/activity_tab_study_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="내 강의실" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_tab_mine"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingRight="@dimen/fab_margin"
+            android:background="@color/menu_not_selected">
+
+            <ImageView
+                android:id="@+id/activity_tab_mine_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_home_selected"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:id="@+id/activity_tab_mine_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="내 보관함" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_tab_lately"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingRight="@dimen/fab_margin"
+            android:background="@color/menu_not_selected">
+
+            <ImageView
+                android:id="@+id/activity_tab_lately_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_home_selected"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:id="@+id/activity_tab_lately_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="최근 재생 목록" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_tab_set"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingRight="@dimen/fab_margin"
+            android:background="@color/menu_not_selected">
+
+            <ImageView
+                android:id="@+id/activity_tab_set_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_set_not_selected"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:id="@+id/activity_tab_set_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="설정" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tab_activity_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
