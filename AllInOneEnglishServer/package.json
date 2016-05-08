@@ -1,23 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "AllInOneServer",
-  "version": "0.1.0",
-  "description": "AllInOneServer",
-  "main": "server.js",
-  "scripts": {
-	  "start": "server.js"
-  },
-  "dependencies": {
-	  "express":"^4.13.4",
-	  "socket.io":"^1.4.5",
-	  "mongoose":"^4.4.13"
-  },
-  "engines": {
-	  "node":"5.1.0",
-	  "npm":"3.8.6"
-  }
-}
-=======
   "name": "express1",
   "version": "0.0.1",
   "private": true,
@@ -40,4 +21,3 @@
     "npm":"2.14.4"
   }
 }
->>>>>>> 6ce7c641e38d0698f7b0676e28d3ebfabd1c6b25
