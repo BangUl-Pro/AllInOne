@@ -92,9 +92,9 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
         setBtnLayout(HOME);
         viewPager.setOffscreenPageLimit(5);
 
-        if (!vlcUtils.isInstalledVlc()) {
-            vlcUtils.installVlc();
-        }
+//        if (!vlcUtils.isInstalledVlc()) {
+//            vlcUtils.installVlc();
+//        }
 
         FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
     }

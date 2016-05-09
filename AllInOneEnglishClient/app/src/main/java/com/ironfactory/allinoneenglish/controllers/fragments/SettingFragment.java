@@ -15,7 +15,7 @@ public class SettingFragment extends Fragment {
 
     private static final String TAG = "SettingFragment";
 
-    private TextView verView;
+    private TextView versionView;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -30,10 +30,10 @@ public class SettingFragment extends Fragment {
     }
 
     private void init(View view) {
-        verView = (TextView) view.findViewById(R.id.fragment_setting_ver);
+        versionView = (TextView) view.findViewById(R.id.fragment_setting_ver);
         try {
             PackageInfo i = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            verView.setText(i.versionName);
+            versionView.setText(i.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

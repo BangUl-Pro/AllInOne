@@ -28,6 +28,11 @@ public class Global {
     public static final String USER = "user";
 
     public static final String LOGIN = "login";
+    public static final String QNA_LINK = "http://www.allinoneenglish.com/qna";
+    public static final String QUESTION_LINK = "http://www.allinoneenglish.com/index.php?mid=classqna&act=dispNproductCommentList";
+    public static final String AFTER_LINK = "http://www.allinoneenglish.com/index.php?mid=review&act=dispNproductReviewList";
+
+
     public static final int QNA = 1;
     public static final int QUESTION = 2;
     public static final int CUSTOMER = 3;
