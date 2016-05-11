@@ -13,10 +13,10 @@ import android.widget.TextView;
 
 import com.ironfactory.allinoneenglish.Global;
 import com.ironfactory.allinoneenglish.R;
+import com.ironfactory.allinoneenglish.controllers.activities.StudyClassActivity;
 import com.ironfactory.allinoneenglish.utils.VLCUtils;
 import com.ironfactory.allinoneenglish.utils.VideoUtils;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,11 +29,14 @@ public class StudyClassAdapter extends RecyclerView.Adapter<StudyClassAdapter.St
 
     private Context context;
     private int position;
+    private int mPosition = 0;
     private OnPlayVideo sender;
 
     public StudyClassAdapter(Context context, int position) {
         this.context = context;
-        this.position = position * 41 - position + 1;
+        this.position = position;
+        if (position != 0)
+            mPosition = position * 41 - position + 1;
         sender = (OnPlayVideo) context;
     }
 
@@ -53,15 +56,21 @@ public class StudyClassAdapter extends RecyclerView.Adapter<StudyClassAdapter.St
             holder.numText.setTextColor(context.getResources().getColor(R.color.background_mine_hard));
         }
 
-        final int coursePosition = position + this.position;
+        final int coursePosition = position + mPosition;
         StringBuilder sb = new StringBuilder();
-        sb.append(position);
+        sb.append(position + 1);
         if (coursePosition < 10)
             sb.insert(0, 0);
         holder.numText.setText(sb.toString());
         holder.titleText.setText(Global.files.get(coursePosition).getName());
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-        holder.lastStudyDayText.setText("최종학습일 " + format.format(Global.courses.get(coursePosition).getLastStudyDate()).toString());
+        Log.d(TAG, "time = " + Global.courses.get(coursePosition).getLastStudyDate().getTime());
+        if (Global.courses.get(coursePosition).getLastStudyDate().getTime() == 0)
+            holder.lastStudyDayText.setVisibility(View.INVISIBLE);
+        else {
+            holder.lastStudyDayText.setVisibility(View.VISIBLE);
+            holder.lastStudyDayText.setText("최종학습일 " + format.format(Global.courses.get(coursePosition).getLastStudyDate()).toString());
+        }
         holder.playText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +89,7 @@ public class StudyClassAdapter extends RecyclerView.Adapter<StudyClassAdapter.St
                                 sender.onStopPlay();
                                 vlcUtils.playVideo(videoUtils.getVideoDecryptPath());
 
-                                File file = new File(videoUtils.getVideoDecryptPath());
-                                if (file.delete()) {
-                                    Log.d(TAG, "삭제 성공");
-                                } else {
-                                    Log.d(TAG, "삭제 실패");
-                                }
+                                StudyClassActivity.filePath = videoUtils.getVideoDecryptPath();
                             }
                         });
                         Global.courses.get(position).setLastStudyDate(new Date(System.currentTimeMillis()));

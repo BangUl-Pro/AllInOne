@@ -1,5 +1,7 @@
 package com.ironfactory.allinoneenglish;
 
+import android.os.Environment;
+
 import com.ironfactory.allinoneenglish.entities.CourseEntity;
 import com.ironfactory.allinoneenglish.managers.DBManger;
 
@@ -32,6 +34,9 @@ public class Global {
     public static final String QUESTION_LINK = "http://www.allinoneenglish.com/index.php?mid=classqna&act=dispNproductCommentList";
     public static final String AFTER_LINK = "http://www.allinoneenglish.com/index.php?mid=review&act=dispNproductReviewList";
 
+    public static final String SD_CARD_PATH = System.getenv("SECONDARY_STORAGE") + "/AllInOne";
+    public static final String DECRYPT_PATH = Environment.getExternalStorageDirectory().getPath() + "/AllInOne";
+
 
     public static final int QNA = 1;
     public static final int QUESTION = 2;
@@ -58,6 +63,7 @@ public class Global {
 
             if(file.getName().endsWith(endStr)) {
                 curFileList.add(file);
+//                Log.d(",,", "filename = " + file.getName());
             }
         }
         if (endStr.equals(".abcde"))

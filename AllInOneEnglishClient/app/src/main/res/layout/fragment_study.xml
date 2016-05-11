@@ -7,13 +7,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_study_recycler"
         android:layout_width="match_parent"
-        android:layout_height="600dp"/>
+        android:layout_height="@dimen/study_recycler_height"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <Button
             android:id="@+id/fragment_study_qna"

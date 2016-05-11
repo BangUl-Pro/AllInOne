@@ -10,10 +10,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.ironfactory.allinoneserver.R;
@@ -22,14 +24,17 @@ import com.ironfactory.allinoneserver.entities.UserEntity;
 import com.ironfactory.allinoneserver.networks.RequestListener;
 import com.ironfactory.allinoneserver.networks.SocketManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private List<UserEntity> userEntities;
     private RecyclerView recyclerView;
     private MainAdapter adapter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,21 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MainAdapter();
         recyclerView.setAdapter(adapter);
+
+        searchView = (SearchView) findViewById(R.id.activity_main_search);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = searchView.getQuery().toString();
+                Log.d(TAG, "str = " + str);
+                List<UserEntity> userEntities = new ArrayList<UserEntity>();
+                for (UserEntity user : MainActivity.this.userEntities) {
+                    if (user.getId().contains(str))
+                        userEntities.add(user);
+                }
+                adapter.setUserEntities(userEntities);
+            }
+        });
     }
 
     @Override
@@ -86,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_main) {
             Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_search) {
+            searchView.setVisibility(View.VISIBLE);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -94,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         SocketManager.getUsers(new RequestListener.OnGetUsers() {
             @Override
             public void onSuccess(List<UserEntity> userEntities) {
+                MainActivity.this.userEntities = userEntities;
                 adapter.setUserEntities(userEntities);
             }
 

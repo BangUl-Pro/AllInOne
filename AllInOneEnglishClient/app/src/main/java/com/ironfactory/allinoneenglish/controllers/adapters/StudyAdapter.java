@@ -38,9 +38,9 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.StudyViewHol
     public void onBindViewHolder(StudyViewHolder holder, final int position) {
 //        holder.titleImage.setImageResource();
         if (position % 2 == 0) {
-            holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.main));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.main));
         } else {
-            holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.banner2_background));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.banner2_background));
         }
         final int POSITION = position + 1;
         holder.titleText.setText("올인원 기초 " + POSITION + " (40강)");

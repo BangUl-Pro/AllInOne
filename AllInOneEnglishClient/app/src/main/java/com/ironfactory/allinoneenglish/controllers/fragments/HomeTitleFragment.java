@@ -1,6 +1,7 @@
 package com.ironfactory.allinoneenglish.controllers.fragments;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -59,8 +60,9 @@ public class HomeTitleFragment extends Fragment {
 
     private void init(View view) {
         imageView = (ImageView) view.findViewById(R.id.fragment_home_title_image);
-        ANDREW_VIDEO = Global.searchAllFile(new File("/storage"), "andrew.avi").get(0).getPath();
-        ALEX_VIDEO = Global.searchAllFile(new File("/storage"), "alex.avi").get(0).getPath();
+        Log.d(TAG, "sd = " + Environment.getExternalStorageDirectory());
+        ANDREW_VIDEO = Global.searchAllFile(new File(Global.SD_CARD_PATH), "andrew.avi").get(0).getPath();
+        ALEX_VIDEO = Global.searchAllFile(new File(Global.SD_CARD_PATH), "alex.avi").get(0).getPath();
 
         setImage();
         setListener();

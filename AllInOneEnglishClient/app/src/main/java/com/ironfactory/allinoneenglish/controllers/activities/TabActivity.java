@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +63,8 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
      * TODO : 생성자
      * */
     private void init() {
-//        searchByFileFilter(new File(Environment.MEDIA_MOUNTED));
-//        searchByFileFilter(new File("/storage"));
-        Global.searchAllFile(new File("/storage"), ".abcde");
+        Log.d(TAG, "sdcard = " + Global.SD_CARD_PATH);
+        Global.searchAllFile(new File(Global.SD_CARD_PATH), ".abcde");
         checkDB();
         vlcUtils = new VLCUtils(this);
 
@@ -92,9 +92,9 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
         setBtnLayout(HOME);
         viewPager.setOffscreenPageLimit(5);
 
-//        if (!vlcUtils.isInstalledVlc()) {
-//            vlcUtils.installVlc();
-//        }
+        if (!vlcUtils.isInstalledVlc()) {
+            vlcUtils.installVlc();
+        }
 
         FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
     }

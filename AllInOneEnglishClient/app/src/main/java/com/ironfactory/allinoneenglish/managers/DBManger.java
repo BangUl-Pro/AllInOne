@@ -5,12 +5,12 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.ironfactory.allinoneenglish.entities.CourseEntity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,35 +42,28 @@ public class DBManger extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE_NAME + " (" + COL_INDEX + " INTEGER PRIMARY KEY AUTOINCREMENT , " + COL_LAST_STUDY_DATE + " TEXT, " + COL_BOOKMARK + " INTEGER);";
+        String sql = "CREATE TABLE " + TABLE_NAME + " (" + COL_INDEX + " INTEGER PRIMARY KEY AUTOINCREMENT , " + COL_LAST_STUDY_DATE + " BIGINT, " + COL_BOOKMARK + " INTEGER);";
         db.execSQL(sql);
     }
 
 
     public void insertCourse(CourseEntity courseEntity) {
         SQLiteDatabase db = getWritableDatabase();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm");
-        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES(" + courseEntity.getIndex() + ", '" + simpleDateFormat.format(courseEntity.getLastStudyDate()) + "', " + (courseEntity.isBookmark() ? 1 : 0) + ");");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES(" + courseEntity.getIndex() + ", " + courseEntity.getLastStudyDate().getTime() + ", " + (courseEntity.isBookmark() ? 1 : 0) + ");");
     }
 
     public void updateCourse(CourseEntity courseEntity) {
+        Log.d(TAG, "time = " + courseEntity.getLastStudyDate().getTime());
         SQLiteDatabase db = getWritableDatabase();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm");
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_LAST_STUDY_DATE + " = '" + simpleDateFormat.format(courseEntity.getLastStudyDate()) + "', " + COL_BOOKMARK + " = " + (courseEntity.isBookmark() ? 1 : 0) + " WHERE " + COL_INDEX + " = " + courseEntity.getIndex());
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_LAST_STUDY_DATE + " = " + courseEntity.getLastStudyDate().getTime() + ", " + COL_BOOKMARK + " = " + (courseEntity.isBookmark() ? 1 : 0) + " WHERE " + COL_INDEX + " = " + courseEntity.getIndex());
     }
 
     public CourseEntity getCourse(int index) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL_INDEX + " = " + index, null);
         cursor.moveToFirst();
-        StringBuilder sb = new StringBuilder(cursor.getString(1));
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, Integer.parseInt(sb.substring(0, 4)));
-        calendar.set(Calendar.MONTH, Integer.parseInt(sb.substring(5, 7)));
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(sb.substring(8, 10)));
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sb.substring(11, 13)));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(sb.substring(14, 16)));
-        CourseEntity courseEntity = new CourseEntity(cursor.getInt(0), calendar.getTime(), (cursor.getInt(2) == 0 ? false : true));
+        long l = cursor.getLong(1);
+        CourseEntity courseEntity = new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true));
         return courseEntity;
     }
 
@@ -80,14 +73,8 @@ public class DBManger extends SQLiteOpenHelper {
         List<CourseEntity> courseList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            StringBuilder sb = new StringBuilder(cursor.getString(1));
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, Integer.parseInt(sb.substring(0, 4)));
-            calendar.set(Calendar.MONTH, Integer.parseInt(sb.substring(5, 7)));
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(sb.substring(8, 10)));
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sb.substring(11, 13)));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(sb.substring(14, 16)));
-            courseList.add(new CourseEntity(cursor.getInt(0), calendar.getTime(), (cursor.getInt(2) == 0 ? false : true)));
+            long l = cursor.getLong(1);
+            courseList.add(new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true)));
         }
         return courseList;
     }
@@ -98,16 +85,8 @@ public class DBManger extends SQLiteOpenHelper {
         List<CourseEntity> courseList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            StringBuilder sb = new StringBuilder(cursor.getString(1));
-            Calendar calendar = Calendar.getInstance();
-            if (Integer.parseInt(sb.substring(0, 4)) < 2016)
-                break;
-            calendar.set(Calendar.YEAR, Integer.parseInt(sb.substring(0, 4)));
-            calendar.set(Calendar.MONTH, Integer.parseInt(sb.substring(5, 7)));
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(sb.substring(8, 10)));
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sb.substring(11, 13)));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(sb.substring(14, 16)));
-            courseList.add(new CourseEntity(cursor.getInt(0), calendar.getTime(), (cursor.getInt(2) == 0 ? false : true)));
+            long l = cursor.getLong(1);
+            courseList.add(new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true)));
         }
         return courseList;
     }
@@ -118,14 +97,8 @@ public class DBManger extends SQLiteOpenHelper {
         List<CourseEntity> courseList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            StringBuilder sb = new StringBuilder(cursor.getString(1));
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, Integer.parseInt(sb.substring(0, 4)));
-            calendar.set(Calendar.MONTH, Integer.parseInt(sb.substring(5, 7)));
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(sb.substring(8, 10)));
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sb.substring(11, 13)));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(sb.substring(14, 16)));
-            courseList.add(new CourseEntity(cursor.getInt(0), calendar.getTime(), (cursor.getInt(2) == 0 ? false : true)));
+            long l = cursor.getLong(1);
+            courseList.add(new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true)));
         }
         return courseList;
     }

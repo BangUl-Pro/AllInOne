@@ -21,7 +21,8 @@
             android:name=".controllers.activities.TabActivity"
             android:label="@string/title_activity_tab"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".controllers.activities.StudyClassActivity"
             android:screenOrientation="landscape" />

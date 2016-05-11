@@ -36,11 +36,13 @@ public class VideoUtils {
         this.position = position;
         videoEncryptPath = Global.files.get(position).getPath();
         Log.d("dd", "videoEn = " + videoEncryptPath);
-        String parentPath = Global.files.get(position).getParent() + "/";
         StringBuilder name = new StringBuilder(Global.files.get(position).getName());
 //        name.insert(0, ".");
         String nameStr = name.toString().replace(".abcde", ".mp4");
-        videoDecryptPath = parentPath + nameStr;
+        File parentFile = new File(Global.DECRYPT_PATH);
+        if (!parentFile.exists())
+            parentFile.mkdirs();
+        videoDecryptPath = parentFile.getPath() + nameStr;
         Log.d("dd", "videoDe = " + videoDecryptPath);
     }
 

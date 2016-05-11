@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/list_height"
+    android:gravity="center_vertical"
+    android:id="@+id/item_study_class_container">
+
+    <TextView
+        android:id="@+id/item_study_class_num"
+        android:layout_width="@dimen/icon_big_width"
+        android:layout_height="@dimen/icon_big_height"
+        android:textColor="@color/main"
+        android:gravity="center"
+        android:textSize="@dimen/banner1_up_text_size"
+        android:background="@drawable/circle"
+        android:layout_marginLeft="@dimen/fab_margin"/>
+
+    <TextView
+        android:id="@+id/item_study_class_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:textSize="@dimen/study_list_text"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/item_study_class_last_study_day"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/study_list_text"
+        android:gravity="right"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/black"
+        android:layout_weight="2"/>
+
+    <TextView
+        android:id="@+id/item_study_class_play"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="▷학습하기"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:textColor="@color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="@dimen/study_list_text"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:background="@drawable/ic_play"/>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_bookmark">
+
+        <ImageButton
+            android:id="@+id/item_study_class_bookmark"
+            android:layout_width="@dimen/icon_small_width"
+            android:layout_height="@dimen/icon_small_height"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_bookmark_blank"/>
+
+    </FrameLayout>
+
+</LinearLayout>

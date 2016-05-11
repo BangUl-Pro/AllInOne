@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ironfactory.allinoneenglish.Global;
 import com.ironfactory.allinoneenglish.R;
 import com.ironfactory.allinoneenglish.controllers.adapters.StudyClassAdapter;
 import com.ironfactory.allinoneenglish.utils.FontUtils;
+
+import java.io.File;
 
 public class StudyClassActivity extends AppCompatActivity implements StudyClassAdapter.OnPlayVideo {
 
@@ -18,6 +21,7 @@ public class StudyClassActivity extends AppCompatActivity implements StudyClassA
     private StudyClassAdapter adapter;
     private int position;
     private MaterialDialog dialog;
+    public static String filePath = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,5 +57,25 @@ public class StudyClassActivity extends AppCompatActivity implements StudyClassA
     @Override
     public void onStopPlay() {
         dialog.cancel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (filePath != null) {
+                    File file = new File(filePath);
+                    if (file.delete()) {
+                        Log.d(TAG, "삭제 성공");
+                    } else {
+                        Log.d(TAG, "삭제 실패");
+                    }
+                    filePath = null;
+                }
+            }
+        }).start();
     }
 }
