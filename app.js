@@ -80,7 +80,7 @@ io.on('connection', function(socket) {
           });
         } else {
           socket.emit('setDeviceId', {
-            'code' : 400,
+            'code' : 200,
             'user' : user
           });
         }
