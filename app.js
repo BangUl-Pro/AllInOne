@@ -39,6 +39,7 @@ io.on('connection', function(socket) {
       var user = new UserModel({
           'user_id' : id,
           'user_pw' : pw,
+          'user_device_id' : null,
           'user_accessable' : 2
           });
       
