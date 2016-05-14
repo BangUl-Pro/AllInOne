@@ -72,7 +72,7 @@ io.on('connection', function(socket) {
         'code' : 430
       });
     } else {
-      UserModel.update({'user_id' : id}, {'user_device_id' : id}, function(err, user) {
+      UserModel.update({'user_id' : id}, {'user_device_id' : deviceId}, function(err, user) {
         if (err) {
           console.log('로그인 DB쿼리 에러 = ' + err);
           socket.emit('setDeviceId', {
