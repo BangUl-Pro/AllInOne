@@ -111,7 +111,7 @@ io.on('connection', function(socket) {
         } else {
           socket.emit('login', {
             'code' : 200,
-            'user' : user
+            'user' : user 
           });
         }
       });
