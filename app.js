@@ -15,11 +15,13 @@ var Schema = mongoose.Schema;
 var UserSchema = Schema({
   'user_id' : String,
   'user_pw' : String,
+  'user_device_id' : String,
   'user_accessable' : Number
 });
 var UserModel = mongoose.model('user', UserSchema);
 
 io.on('connection', function(socket) {
+
   socket.on('signUp', function(data) {
     var id = data.id;
     var pw = data.pw;
@@ -55,6 +57,36 @@ io.on('connection', function(socket) {
     }
   });
   
+  socket.on('setDeviceId', function(data) {
+    var id = data.id;
+    var deviceId = data.deviceId;
+
+    console.log('setDeviceId');
+    console.log('setDeviceId id = ' + id);
+    console.log('setDeviceId deviceId = ' + deviceId);
+
+    if (!id || !deviceId) {
+      console.log('setDeviceId 데이터 누락');
+      socket.emit('setDeviceId', {
+        'code' : 430
+      });
+    } else {
+      UserModel.update({'user_id' : id}, {'user_device_id' : id}, function(err, user) {
+        if (err) {
+          console.log('로그인 DB쿼리 에러 = ' + err);
+          socket.emit('setDeviceId', {
+            'code' : 431
+          });
+        } else {
+          socket.emit('setDeviceId', {
+            'code' : 400,
+            'user' : user
+          });
+        }
+      });
+    }
+  });
+
   socket.on('login', function(data) {
     var id = data.id;
     var pw = data.pw;
