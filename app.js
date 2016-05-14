@@ -66,7 +66,7 @@ io.on('connection', function(socket) {
     console.log('setDeviceId id = ' + id);
     console.log('setDeviceId deviceId = ' + deviceId);
 
-    if (!id || !deviceId) {
+    if (!id) {
       console.log('setDeviceId 데이터 누락');
       socket.emit('setDeviceId', {
         'code' : 430
