@@ -1,6 +1,7 @@
 package com.ironfactory.allinoneenglish.controllers.fragments;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -26,6 +27,26 @@ public class HomeFragment extends Fragment {
 
     private HomeTitleAdapter adapter;
 
+    private int state = 0;
+
+    private CountDownTimer timer = new CountDownTimer(3000, 3000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            if (viewPager.getCurrentItem() == 0) {
+                viewPager.setCurrentItem(1);
+                timer.start();
+            } else {
+                viewPager.setCurrentItem(0);
+                timer.start();
+            }
+        }
+    };
+
     public HomeFragment() {
     }
     
@@ -49,6 +70,7 @@ public class HomeFragment extends Fragment {
         FontUtils.setGlobalFont(getActivity(), banner2, Global.HANNA);
 
         setListener();
+        timer.start();
     }
 
     private void setListener() {

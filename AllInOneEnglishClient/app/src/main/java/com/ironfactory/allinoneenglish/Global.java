@@ -26,13 +26,17 @@ public class Global {
     public static final String POSITION = "position";
 
     public static final String ID = "id";
+    public static final String DEVICE_ID = "deviceId";
     public static final String PW = "pw";
     public static final String USER = "user";
 
     public static final String LOGIN = "login";
+    public static final String SET_DEVICE_ID = "setDeviceId";
     public static final String QNA_LINK = "http://www.allinoneenglish.com/qna";
     public static final String QUESTION_LINK = "http://www.allinoneenglish.com/index.php?mid=classqna&act=dispNproductCommentList";
     public static final String AFTER_LINK = "http://www.allinoneenglish.com/index.php?mid=review&act=dispNproductReviewList";
+    public static final String TAB_10_1_LINK = "http://www.allinoneenglish.com/course/4575";
+    public static final String TAB_8_0_LINK = "http://www.allinoneenglish.com/course/4580";
 
     public static final String SD_CARD_PATH = System.getenv("SECONDARY_STORAGE") + "/AllInOne";
     public static final String DECRYPT_PATH = Environment.getExternalStorageDirectory().getPath() + "/AllInOne";
@@ -40,8 +44,9 @@ public class Global {
 
     public static final int QNA = 1;
     public static final int QUESTION = 2;
-    public static final int CUSTOMER = 3;
-    public static final int AFTER = 4;
+    public static final int AFTER = 3;
+    public static final int TAB_10_1 = 4;
+    public static final int TAB_8_0 = 5;
 
     public static DBManger dbManager;
     public static List<File> files = new ArrayList<>();

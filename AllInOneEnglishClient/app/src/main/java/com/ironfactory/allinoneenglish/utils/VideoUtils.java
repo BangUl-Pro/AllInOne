@@ -42,7 +42,7 @@ public class VideoUtils {
         File parentFile = new File(Global.DECRYPT_PATH);
         if (!parentFile.exists())
             parentFile.mkdirs();
-        videoDecryptPath = parentFile.getPath() + nameStr;
+        videoDecryptPath = parentFile.getPath() + "/" + nameStr;
         Log.d("dd", "videoDe = " + videoDecryptPath);
     }
 

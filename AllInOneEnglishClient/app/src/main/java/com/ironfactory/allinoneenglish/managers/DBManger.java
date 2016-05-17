@@ -86,7 +86,8 @@ public class DBManger extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             long l = cursor.getLong(1);
-            courseList.add(new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true)));
+            if (l > 0)
+                courseList.add(new CourseEntity(cursor.getInt(0), new Date(l), (cursor.getInt(2) == 0 ? false : true)));
         }
         return courseList;
     }

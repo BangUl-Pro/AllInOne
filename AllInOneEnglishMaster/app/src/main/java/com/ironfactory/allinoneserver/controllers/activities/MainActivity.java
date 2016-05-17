@@ -68,17 +68,29 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         searchView = (SearchView) findViewById(R.id.activity_main_search);
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                String str = searchView.getQuery().toString();
-                Log.d(TAG, "str = " + str);
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "query = " + query);
                 List<UserEntity> userEntities = new ArrayList<UserEntity>();
                 for (UserEntity user : MainActivity.this.userEntities) {
-                    if (user.getId().contains(str))
+                    if (user.getId().contains(query))
                         userEntities.add(user);
                 }
                 adapter.setUserEntities(userEntities);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "newText = " + newText);
+                List<UserEntity> userEntities = new ArrayList<UserEntity>();
+                for (UserEntity user : MainActivity.this.userEntities) {
+                    if (user.getId().contains(newText))
+                        userEntities.add(user);
+                }
+                adapter.setUserEntities(userEntities);
+                return false;
             }
         });
     }

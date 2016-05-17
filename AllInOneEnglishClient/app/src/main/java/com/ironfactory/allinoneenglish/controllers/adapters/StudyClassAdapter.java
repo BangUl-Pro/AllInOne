@@ -88,7 +88,6 @@ public class StudyClassAdapter extends RecyclerView.Adapter<StudyClassAdapter.St
                             public void run() {
                                 sender.onStopPlay();
                                 vlcUtils.playVideo(videoUtils.getVideoDecryptPath());
-
                                 StudyClassActivity.filePath = videoUtils.getVideoDecryptPath();
                             }
                         });

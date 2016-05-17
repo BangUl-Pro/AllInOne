@@ -75,6 +75,7 @@ public class SocketManager {
 
     public static void login(String id, String pw, final RequestListener.OnLogin sender) {
         try {
+            checkSocket();
             Log.d(TAG, "로그인 ");
             JSONObject object = new JSONObject();
             object.put(Global.ID, id);
@@ -99,6 +100,48 @@ public class SocketManager {
                             });
                         } else {
                             Log.d(TAG, "로그인 실패");
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sender.onException(code);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setDeviceId(String id, String pw, final RequestListener.OnSetDeviceId sender) {
+        try {
+            checkSocket();
+            Log.d(TAG, "디바이스 아이디 설정 ");
+            JSONObject object = new JSONObject();
+            object.put(Global.ID, id);
+            object.put(Global.DEVICE_ID, pw);
+            socket.emit(Global.SET_DEVICE_ID, object);
+            socket.once(Global.SET_DEVICE_ID, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    try {
+                        final JSONObject reqObject = (JSONObject) args[0];
+                        final int code = reqObject.getInt(CODE);
+
+                        if (code == SUCCESS) {
+                            Log.d(TAG, "디바이스 아이디 설정 성공");
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sender.onSuccess();
+                                }
+                            });
+                        } else {
+                            Log.d(TAG, "디바이스 아이디 설정 실패");
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {

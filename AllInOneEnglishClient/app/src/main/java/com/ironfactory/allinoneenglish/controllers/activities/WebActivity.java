@@ -33,6 +33,14 @@ public class WebActivity extends AppCompatActivity {
             case Global.AFTER:
                 webView.loadUrl(Global.AFTER_LINK);
                 break;
+
+            case Global.TAB_8_0:
+                webView.loadUrl(Global.AFTER_LINK);
+                break;
+
+            case Global.TAB_10_1:
+                webView.loadUrl(Global.AFTER_LINK);
+                break;
         }
     }
 }

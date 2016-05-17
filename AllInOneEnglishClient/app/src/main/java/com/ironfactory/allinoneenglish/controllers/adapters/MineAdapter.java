@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.ironfactory.allinoneenglish.Global;
 import com.ironfactory.allinoneenglish.R;
+import com.ironfactory.allinoneenglish.controllers.activities.StudyClassActivity;
 import com.ironfactory.allinoneenglish.controllers.fragments.MineFragment;
 import com.ironfactory.allinoneenglish.entities.CourseEntity;
 import com.ironfactory.allinoneenglish.utils.VLCUtils;
 import com.ironfactory.allinoneenglish.utils.VideoUtils;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -62,41 +62,42 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.StudyViewHolde
             sb.insert(0, 0);
         holder.numText.setText(sb.toString());
         holder.titleText.setText(Global.files.get(bookmarkList.get(position).getIndex()).getName());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-        holder.lastStudyDayText.setText("최종학습일 " + format.format(Global.courses.get(position).getLastStudyDate()).toString());
+        Log.d(TAG, "time = " + Global.courses.get(bookmarkList.get(position).getIndex()).getLastStudyDate().getTime());
+        if (Global.courses.get(bookmarkList.get(position).getIndex()).getLastStudyDate().getTime() == 0)
+            holder.lastStudyDayText.setVisibility(View.INVISIBLE);
+        else {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+            holder.lastStudyDayText.setVisibility(View.VISIBLE);
+            holder.lastStudyDayText.setText("최종학습일 " + format.format(Global.courses.get(bookmarkList.get(position).getIndex()).getLastStudyDate()).toString());
+        }
         holder.playText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onPlayVideo.onPlay();
+                final VideoUtils videoUtils = new VideoUtils();
                 final Handler handler = new Handler();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final VideoUtils videoUtils = new VideoUtils();
-                        videoUtils.setPosition(position);
+                        videoUtils.setPosition(bookmarkList.get(position).getIndex());
                         videoUtils.decryptVideo();
+                        final VLCUtils vlcUtils = new VLCUtils(context);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
                                 onPlayVideo.onStopPlay();
-                                VLCUtils vlcUtils = new VLCUtils(context);
                                 vlcUtils.playVideo(videoUtils.getVideoDecryptPath());
-                                Global.courses.get(position).setLastStudyDate(new Date(System.currentTimeMillis()));
-                                Global.dbManager.updateCourse(Global.courses.get(position));
-                                File file = new File(videoUtils.getVideoDecryptPath());
-                                if (file.delete()) {
-                                    Log.d(TAG, "삭제 성공");
-                                } else {
-                                    Log.d(TAG, "삭제 실패");
-                                }
+                                StudyClassActivity.filePath = videoUtils.getVideoDecryptPath();
                             }
                         });
+                        Global.courses.get(position).setLastStudyDate(new Date(System.currentTimeMillis()));
+                        Global.dbManager.updateCourse(Global.courses.get(position));
                     }
                 }).start();
             }
         });
 
-        if (Global.courses.get(position).isBookmark()) {
+        if (Global.courses.get(bookmarkList.get(position).getIndex()).isBookmark()) {
             holder.bookmarkBtn.setBackgroundResource(R.drawable.ic_bookmark);
         } else {
             holder.bookmarkBtn.setBackgroundResource(R.drawable.ic_bookmark_blank);
@@ -106,14 +107,14 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.StudyViewHolde
             @Override
             public void onClick(View v) {
                 // DB 수정 해야함
-                if (Global.courses.get(position).isBookmark()) {
+                if (Global.courses.get(bookmarkList.get(position).getIndex()).isBookmark()) {
                     holder.bookmarkBtn.setBackgroundResource(R.drawable.ic_bookmark_blank);
-                    Global.courses.get(position).setBookmark(false);
+                    Global.courses.get(bookmarkList.get(position).getIndex()).setBookmark(false);
                 } else {
                     holder.bookmarkBtn.setBackgroundResource(R.drawable.ic_bookmark);
-                    Global.courses.get(position).setBookmark(true);
+                    Global.courses.get(bookmarkList.get(position).getIndex()).setBookmark(true);
                 }
-                Global.dbManager.updateCourse(Global.courses.get(position));
+                Global.dbManager.updateCourse(Global.courses.get(bookmarkList.get(position).getIndex()));
             }
         });
     }

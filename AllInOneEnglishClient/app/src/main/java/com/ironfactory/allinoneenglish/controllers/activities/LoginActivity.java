@@ -4,15 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ironfactory.allinoneenglish.Global;
+import com.ironfactory.allinoneenglish.PackageReceiver;
 import com.ironfactory.allinoneenglish.R;
 import com.ironfactory.allinoneenglish.entities.UserEntity;
 import com.ironfactory.allinoneenglish.networks.RequestListener;
@@ -43,42 +45,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private CheckBox checkBox;
 
+    private PackageReceiver mPackageReceiver = new PackageReceiver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        SocketManager.createInstance(this);
-
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        checkBox = (CheckBox) findViewById(R.id.activity_login_auto);
-
         autoLogin();
-
-        FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
     }
 
     private void attemptLogin() {
@@ -129,9 +101,31 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "자동로그인 허용");
                         }
 
-                        Intent intent = new Intent(getApplicationContext(), TabActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                        Log.d(TAG, "deviceId = " + userEntity.getDeviceId());
+                        Log.d(TAG, "deviceId = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                        if (userEntity.getDeviceId() == null) {
+                            SocketManager.setDeviceId(userEntity.getId(), Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID), new RequestListener.OnSetDeviceId() {
+                                @Override
+                                public void onSuccess() {
+                                    Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onException(int code) {
+                                }
+                            });
+                        } else {
+                            if (userEntity.getDeviceId().equals(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))) {
+                                Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "본인의 기기에서만 사용해주세요", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 }
 
@@ -155,12 +149,23 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(mPackageReceiver);
+    }
+
     private void autoLogin() {
+        registerReceiver(mPackageReceiver, new IntentFilter(
+                Intent.ACTION_PACKAGE_ADDED));
+
+        SocketManager.createInstance(this);
         final SharedPreferences preferences = getSharedPreferences(Global.APP_NAME, MODE_PRIVATE);
         final String id = preferences.getString(Global.ID, null);
         final String pw = preferences.getString(Global.PW, null);
         if (id != null && pw != null) {
-            checkBox.setChecked(true);
+//            checkBox.setChecked(true);
 //            checkBox.setBackgroundResource(R.drawable.auto_login);
             SocketManager.login(id, pw, new RequestListener.OnLogin() {
                 @Override
@@ -169,13 +174,13 @@ public class LoginActivity extends AppCompatActivity {
                     if (userEntity.getAccessable() == UserEntity.UNACCESSABLE) {
                         Toast.makeText(getApplicationContext(), "회원 차단 상태입니다", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (checkBox.isChecked()) {
-                            setAutoLogin(id, pw);
-                            Log.d(TAG, "자동로그인 허용");
-                        } else {
-                            setAutoLogin(null, null);
-                            Log.d(TAG, "자동로그인 차단");
-                        }
+//                        if (checkBox.isChecked()) {
+//                            setAutoLogin(id, pw);
+//                            Log.d(TAG, "자동로그인 허용");
+//                        } else {
+//                            setAutoLogin(null, null);
+//                            Log.d(TAG, "자동로그인 차단");
+//                        }
 
                         Intent intent = new Intent(getApplicationContext(), TabActivity.class);
                         startActivity(intent);
@@ -189,8 +194,38 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         } else {
-            checkBox.setChecked(false);
+            setContentView(R.layout.activity_login);
+//            checkBox.setChecked(false);
 //            checkBox.setBackgroundResource(R.drawable.auto_login_blank);
+
+            // Set up the login form.
+            mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+
+            mPasswordView = (EditText) findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
+
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            checkBox = (CheckBox) findViewById(R.id.activity_login_auto);
+
+            FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
         }
     }
 

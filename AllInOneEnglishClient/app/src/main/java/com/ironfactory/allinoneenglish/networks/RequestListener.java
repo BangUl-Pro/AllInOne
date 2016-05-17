@@ -11,4 +11,9 @@ public class RequestListener {
         void onSuccess(UserEntity userEntity);
         void onException(int code);
     }
+
+    public interface OnSetDeviceId {
+        void onSuccess();
+        void onException(int code);
+    }
 }

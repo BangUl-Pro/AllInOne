@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border"
+    android:layout_marginTop="@dimen/fab_margin">
+
+    <TextView
+        android:id="@+id/item_study_ad_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray2"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:padding="@dimen/margin_very_small"
+        android:textSize="@dimen/banner1_small_text_size"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_small">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. 올인원 탭 강의구성은 어떻게 되나요?"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textColor="@color/main"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☞ 올인원 기초 1 (40강), 올인원 기초 2 (40강), 올인원 기초 3 (40강), 올인원 기초 4 (40강) 등 총 4개 강의,\n 160강으로 구성되어 있습니다."
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. 추후 다른 강의가 더 추가되나요?"
+            android:textColor="@color/main"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☞ 2016년 9월 올인원 중급 1 (40강), 올인원 중급 2 (40강), 올인원 중급 3 (40강), 올인원 중급 4 (40강) 등\n총 4개 강의, 160강이 추가될 예정입니다. 기존의 올인원 탭 회원님께서는 특별 회원가에 추가된 강의를 이용하실 수 있습니다."
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. Wifi 연결 불가 시 제한되는 서비스가 있나요?"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textColor="@color/main"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:id="@+id/item_study_ad_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☞ Wifi 미연결 상태에서는 수강후기, 학습질문, QnA 서비스를 사용하실 수 없습니다."
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. 탭 제품 사양 및 사용방법은 어떻게 되나요?"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textColor="@color/main"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☞ 올인원 잉글리쉬 홈페이지에서 제품기능, 제품구성, 제품사양, 사용방법 등에 대한 자세한 설명을 확인하실 수 있습니다. (아래의 링크를 참조하세요.)"
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:id="@+id/item_study_ad_10.1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="올인원 탭 10.1 → http://www.allinoneenglish.com/course/4575"
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:id="@+id/item_study_ad_8.0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="올인원 탭 8.0 → http://www.allinoneenglish.com/course/4580"
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5. 앱을 실행할 때 설치하라고 뜨는 VLC앱은 뭔가요?"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:textColor="@color/main"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☞ 올인원 탭에 설치된 강의를 실행시키기 위한 동영상 플레이어입니다."
+            android:textColor="@color/black"
+            android:textSize="@dimen/banner1_small_text_size"/>
+
+    </LinearLayout>
+    
+</LinearLayout>

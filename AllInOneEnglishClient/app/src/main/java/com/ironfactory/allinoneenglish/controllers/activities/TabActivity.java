@@ -100,6 +100,23 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
     }
 
     private void setListener() {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setBtnLayout(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         for (int i = 0; i < menuLayout.length; i++) {
             final int I = i;
             menuLayout[i].setOnClickListener(new View.OnClickListener() {
