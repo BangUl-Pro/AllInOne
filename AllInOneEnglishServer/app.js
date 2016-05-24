@@ -76,6 +76,7 @@ io.on('connection', function(socket) {
             'code' : 331
           });
         } else {
+          console.log('user = ' + user);
           socket.emit('login', {
             'code' : 200,
             'user' : user
