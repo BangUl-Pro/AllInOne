@@ -15,11 +15,13 @@ var Schema = mongoose.Schema;
 var UserSchema = Schema({
   'user_id' : String,
   'user_pw' : String,
+  'user_device_id' : String,
   'user_accessable' : Number
 });
 var UserModel = mongoose.model('user', UserSchema);
 
 io.on('connection', function(socket) {
+
   socket.on('signUp', function(data) {
     var id = data.id;
     var pw = data.pw;
@@ -34,27 +36,75 @@ io.on('connection', function(socket) {
         'code' : 300
       });
     } else {
-      var user = new UserModel({
-          'user_id' : id,
-          'user_pw' : pw,
-          'user_accessable' : 2
-          });
-      
-      user.save(function(err) {
+      UserModel.find({'user_id' : id}, function(err, users) {
         if (err) {
-          console.log('회원 추가 DB 저장 에러 = ' + err);
+          console.log('회원 추가 중복검사 DB쿼리 에러 = ' + err);
           socket.emit('signUp', {
-            'code' : 301
+            'code' : 302
           });
         } else {
-          socket.emit('signUp', {
-            'code' : 200
-          });
+          if (users[0] == null) {
+            var user = new UserModel({
+                'user_id' : id,
+                'user_pw' : pw,
+                'user_device_id' : null,
+                'user_accessable' : 2
+                });
+            
+            user.save(function(err) {
+              if (err) {
+                console.log('회원 추가 DB 저장 에러 = ' + err);
+                socket.emit('signUp', {
+                  'code' : 301
+                });
+              } else {
+                console.log('회원 추가 성공');
+                socket.emit('signUp', {
+                  'code' : 200
+                });
+              }
+            });
+          } else {
+            console.log('이미 해당 아이디 사용 중');
+            socket.emit('signUp', {
+              'code' : 302
+            });
+          }
         }
       });
     }
   });
   
+  socket.on('setDeviceId', function(data) {
+    var id = data.id;
+    var deviceId = data.deviceId;
+
+    console.log('setDeviceId');
+    console.log('setDeviceId id = ' + id);
+    console.log('setDeviceId deviceId = ' + deviceId);
+
+    if (!id) {
+      console.log('setDeviceId 데이터 누락');
+      socket.emit('setDeviceId', {
+        'code' : 430
+      });
+    } else {
+      UserModel.update({'user_id' : id}, {'user_device_id' : deviceId}, function(err, user) {
+        if (err) {
+          console.log('로그인 DB쿼리 에러 = ' + err);
+          socket.emit('setDeviceId', {
+            'code' : 431
+          });
+        } else {
+          socket.emit('setDeviceId', {
+            'code' : 200,
+            'user' : user
+          });
+        }
+      });
+    }
+  });
+
   socket.on('login', function(data) {
     var id = data.id;
     var pw = data.pw;
@@ -77,10 +127,18 @@ io.on('connection', function(socket) {
           });
         } else {
           console.log('user = ' + user);
-          socket.emit('login', {
-            'code' : 200,
-            'user' : user
-          });
+          if (user[0] != null) {
+            console.log('로그인 성공.');
+            socket.emit('login', {
+              'code' : 200,
+              'user' : user 
+            });
+          } else {
+            console.log('로그인 실패 (계정 없음)');
+            socket.emit('login', {
+              'code' : 332
+            });
+          }
         }
       });
     }

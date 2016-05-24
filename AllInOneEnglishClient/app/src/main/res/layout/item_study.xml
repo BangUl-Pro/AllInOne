@@ -24,7 +24,6 @@
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                android:src="@drawable/profile"
                 android:scaleType="centerInside"
                 android:layout_height="match_parent" />
 

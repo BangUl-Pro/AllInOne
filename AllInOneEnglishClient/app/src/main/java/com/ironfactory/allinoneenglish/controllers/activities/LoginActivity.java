@@ -3,9 +3,12 @@ package com.ironfactory.allinoneenglish.controllers.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -83,6 +86,14 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
+//            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//            NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//
+//            if (!wifi.isConnected()) {
+//                Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
@@ -98,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "자동로그인 허용");
                         } else {
                             setAutoLogin(null, null);
-                            Log.d(TAG, "자동로그인 허용");
+                            Log.d(TAG, "자동로그인 비허용");
                         }
 
 
@@ -132,6 +143,10 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onException(int code) {
                     Log.d(TAG, "로그인 실패");
+                    if (code == 332) {
+                        Toast.makeText(getApplicationContext(), "존재하지 않는 계정입니다.", Toast.LENGTH_SHORT).show();
+                        showProgress(false);
+                    }
                 }
             });
         }
@@ -167,6 +182,16 @@ public class LoginActivity extends AppCompatActivity {
         if (id != null && pw != null) {
 //            checkBox.setChecked(true);
 //            checkBox.setBackgroundResource(R.drawable.auto_login);
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+            if (!wifi.isConnected()) {
+                Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+
             SocketManager.login(id, pw, new RequestListener.OnLogin() {
                 @Override
                 public void onSuccess(UserEntity userEntity) {
@@ -195,8 +220,11 @@ public class LoginActivity extends AppCompatActivity {
             });
         } else {
             setContentView(R.layout.activity_login);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            checkBox = (CheckBox) findViewById(R.id.activity_login_auto);
 //            checkBox.setChecked(false);
-//            checkBox.setBackgroundResource(R.drawable.auto_login_blank);
+            checkBox.setBackgroundResource(R.drawable.auto_login_blank);
 
             // Set up the login form.
             mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -220,10 +248,6 @@ public class LoginActivity extends AppCompatActivity {
                     attemptLogin();
                 }
             });
-
-            mLoginFormView = findViewById(R.id.login_form);
-            mProgressView = findViewById(R.id.login_progress);
-            checkBox = (CheckBox) findViewById(R.id.activity_login_auto);
 
             FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
         }

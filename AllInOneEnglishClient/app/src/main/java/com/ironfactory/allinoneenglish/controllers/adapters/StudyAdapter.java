@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,23 @@ public class StudyAdapter extends RecyclerView.Adapter {
                     context.startActivity(intent);
                 }
             });
+            switch (position) {
+                case 0:
+                    holder.titleImage.setBackgroundResource(R.drawable.profile1);
+                    break;
+
+                case 1:
+                    holder.titleImage.setBackgroundResource(R.drawable.profile2);
+                    break;
+
+                case 2:
+                    holder.titleImage.setBackgroundResource(R.drawable.profile3);
+                    break;
+
+                case 3:
+                    holder.titleImage.setBackgroundResource(R.drawable.profile4);
+                    break;
+            }
         } else if (mHolder instanceof StudyLinkViewHolder) {
 
         }
@@ -94,6 +112,7 @@ public class StudyAdapter extends RecyclerView.Adapter {
         final TextView updateText;
         final Button playBtn;
         final CardView cardView;
+        final ImageView titleImage;
 
         public StudyViewHolder(View itemView) {
             super(itemView);
@@ -103,7 +122,7 @@ public class StudyAdapter extends RecyclerView.Adapter {
             dateText = (TextView) itemView.findViewById(R.id.item_study_date);
             updateText = (TextView) itemView.findViewById(R.id.item_study_update);
             playBtn = (Button) itemView.findViewById(R.id.item_study_play);
-
+            titleImage = (ImageView) itemView.findViewById(R.id.item_study_title_image);
         }
     }
 
