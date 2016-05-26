@@ -35,8 +35,7 @@ public class Global {
     public static final String QNA_LINK = "http://www.allinoneenglish.com/qna";
     public static final String QUESTION_LINK = "http://www.allinoneenglish.com/index.php?mid=classqna&act=dispNproductCommentList";
     public static final String AFTER_LINK = "http://www.allinoneenglish.com/index.php?mid=review&act=dispNproductReviewList";
-    public static final String TAB_10_1_LINK = "http://www.allinoneenglish.com/course/4575";
-    public static final String TAB_8_0_LINK = "http://www.allinoneenglish.com/course/4580";
+    public static final String ACCESS = "access";
 
     public static final String SD_CARD_PATH = System.getenv("SECONDARY_STORAGE") + "/AllInOne";
     public static final String DECRYPT_PATH = Environment.getExternalStorageDirectory().getPath() + "/AllInOne";

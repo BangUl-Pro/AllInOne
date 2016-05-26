@@ -103,6 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                     // 회원 차단 상태
                     if (userEntity.getAccessable() == UserEntity.UNACCESSABLE) {
                         Toast.makeText(getApplicationContext(), "회원 차단 상태입니다", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences preferences = getSharedPreferences(Global.APP_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(Global.ACCESS, 0);
+                        editor.commit();
                     } else {
                         if (checkBox.isChecked()) {
                             setAutoLogin(id, pw);
@@ -111,6 +116,11 @@ public class LoginActivity extends AppCompatActivity {
                             setAutoLogin(null, null);
                             Log.d(TAG, "자동로그인 비허용");
                         }
+
+                        SharedPreferences preferences = getSharedPreferences(Global.APP_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(Global.ACCESS, 1);
+                        editor.commit();
 
 
                         Log.d(TAG, "deviceId = " + userEntity.getDeviceId());
@@ -186,9 +196,15 @@ public class LoginActivity extends AppCompatActivity {
             NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
             if (!wifi.isConnected()) {
-                Intent intent = new Intent(getApplicationContext(), TabActivity.class);
-                startActivity(intent);
-                finish();
+                int access = preferences.getInt(Global.ACCESS, 1);
+                Log.d(TAG, "access = " + access);
+                if (access == 1) {
+                    Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "회원 차단 상태입니다", Toast.LENGTH_SHORT).show();
+                }
                 return;
             }
 
@@ -198,6 +214,10 @@ public class LoginActivity extends AppCompatActivity {
                     // 회원 차단 상태
                     if (userEntity.getAccessable() == UserEntity.UNACCESSABLE) {
                         Toast.makeText(getApplicationContext(), "회원 차단 상태입니다", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(Global.ACCESS, 0);
+                        editor.commit();
                     } else {
 //                        if (checkBox.isChecked()) {
 //                            setAutoLogin(id, pw);
@@ -206,6 +226,10 @@ public class LoginActivity extends AppCompatActivity {
 //                            setAutoLogin(null, null);
 //                            Log.d(TAG, "자동로그인 차단");
 //                        }
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(Global.ACCESS, 1);
+                        editor.commit();
 
                         Intent intent = new Intent(getApplicationContext(), TabActivity.class);
                         startActivity(intent);
@@ -224,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
             mProgressView = findViewById(R.id.login_progress);
             checkBox = (CheckBox) findViewById(R.id.activity_login_auto);
 //            checkBox.setChecked(false);
-            checkBox.setBackgroundResource(R.drawable.auto_login_blank);
+//            checkBox.setBackgroundResource(R.drawable.auto_login_blank);
 
             // Set up the login form.
             mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
