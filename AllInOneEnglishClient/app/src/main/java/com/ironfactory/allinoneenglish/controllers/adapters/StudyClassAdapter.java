@@ -57,11 +57,18 @@ public class StudyClassAdapter extends RecyclerView.Adapter<StudyClassAdapter.St
         }
 
         final int coursePosition = position + mPosition;
+
         StringBuilder sb = new StringBuilder();
         sb.append(position + 1);
         if (coursePosition < 10)
             sb.insert(0, 0);
         holder.numText.setText(sb.toString());
+
+        if (Global.files.size() <= coursePosition) {
+            holder.titleText.setText("파일이 존재하지 않습니다.");
+            return;
+        }
+
         holder.titleText.setText(Global.files.get(coursePosition).getName());
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
         Log.d(TAG, "time = " + Global.courses.get(coursePosition).getLastStudyDate().getTime());

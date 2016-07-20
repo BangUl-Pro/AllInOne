@@ -28,16 +28,6 @@ public class Decrypt {
 			fos.flush();
 			fos.close();
 			fis.close();
-
-//			byte[] a = FileUtils.readFileToByteArray(file);
-//			byte[] b = new byte[a.length];
-//			for (int j = 0; j < a.length - 1; j++) {
-//				b[j] = a[j + 1];
-//			}
-//			FileUtils.writeByteArrayToFile(outFile, b);
-//			outFile.setExecutable(false, true);
-//			outFile.setReadable(false, true);
-//			outFile.setWritable(false);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

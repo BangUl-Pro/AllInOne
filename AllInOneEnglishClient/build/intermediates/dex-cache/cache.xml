@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/IronFactory/AndroidStudioProjects/AllInOne/AllInOneEnglishClient/app/build/intermediates/exploded-aar/io.userhabit.service/userhabitsdk/1.0.6/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="faca6f7a1fd18cfa26c1026dd10925e37d1a2a32">
+        <dex dex="/Users/IronFactory/AndroidStudioProjects/AllInOne/AllInOneEnglishClient/app/build/intermediates/pre-dexed/release/io.userhabit.service-userhabitsdk-1.0.6_b0b5facd0c7528c57ef195b8c0f282bb9899c5d9.jar" />
+    </item>
+
+</items>

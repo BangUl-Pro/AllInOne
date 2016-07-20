@@ -61,6 +61,9 @@ public class HomeTitleFragment extends Fragment {
     private void init(View view) {
         imageView = (ImageView) view.findViewById(R.id.fragment_home_title_image);
         Log.d(TAG, "sd = " + Environment.getExternalStorageDirectory());
+
+        Global.checkSDCardPath();
+
         ANDREW_VIDEO = Global.searchAllFile(new File(Global.SD_CARD_PATH), "andrew.avi").get(0).getPath();
         ALEX_VIDEO = Global.searchAllFile(new File(Global.SD_CARD_PATH), "alex.avi").get(0).getPath();
 

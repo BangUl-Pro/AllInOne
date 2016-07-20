@@ -61,6 +61,9 @@ public class LatelyAdapter extends RecyclerView.Adapter<LatelyAdapter.StudyViewH
         if (position < 10)
             sb.insert(0, 0);
         holder.numText.setText(sb.toString());
+
+
+
         holder.titleText.setText(Global.files.get(bookmarkList.get(position).getIndex()).getName());
 
         Log.d(TAG, "time = " + Global.courses.get(bookmarkList.get(position).getIndex()).getLastStudyDate().getTime());

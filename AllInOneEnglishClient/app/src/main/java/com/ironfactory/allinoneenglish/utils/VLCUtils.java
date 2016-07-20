@@ -17,11 +17,18 @@ public class VLCUtils {
     }
 
     public void playVideo(String filePath) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri videoUri = Uri.parse(filePath);
-        intent.setDataAndType(videoUri, "application/x-mpegURL");
-        intent.setPackage(VLC_PACKAGE_NAME);
-        context.startActivity(intent);
+        Uri uri = Uri.parse("file://" + filePath);
+        Intent vlcIntent = new Intent(Intent.ACTION_VIEW);
+        vlcIntent.setPackage("org.videolan.vlc");
+        vlcIntent.setDataAndTypeAndNormalize(uri, "video/*");
+        vlcIntent.putExtra("from_start", false);
+        context.startActivity(vlcIntent);
+
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        Uri videoUri = Uri.parse(filePath);
+//        intent.setDataAndType(videoUri, "application/mp4");
+//        intent.setPackage(VLC_PACKAGE_NAME);
+//        context.startActivity(intent);
     }
 
     public void installVlc() {

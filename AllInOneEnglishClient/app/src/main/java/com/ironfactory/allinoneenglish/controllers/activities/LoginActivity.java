@@ -33,6 +33,8 @@ import com.ironfactory.allinoneenglish.networks.RequestListener;
 import com.ironfactory.allinoneenglish.networks.SocketManager;
 import com.ironfactory.allinoneenglish.utils.FontUtils;
 
+import io.userhabit.service.Userhabit;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Userhabit.start(this);
         autoLogin();
     }
 
