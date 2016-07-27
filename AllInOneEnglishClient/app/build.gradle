@@ -9,8 +9,8 @@ model {
             applicationId = "com.ironfactory.allinoneenglish"
             minSdkVersion.apiLevel = 16
             targetSdkVersion.apiLevel = 23
-            versionCode = 7
-            versionName = "1.6"
+            versionCode = 8
+            versionName = "1.7"
         }
     }
     android.buildTypes {

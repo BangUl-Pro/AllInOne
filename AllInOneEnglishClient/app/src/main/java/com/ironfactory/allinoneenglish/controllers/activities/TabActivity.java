@@ -69,13 +69,7 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
      * TODO : 생성자
      * */
     private void init() {
-        Log.d(TAG, "sdcard = " + Global.SD_CARD_PATH);
-
-        Global.checkSDCardPath();
-
-        Global.searchAllFile(new File(Global.SD_CARD_PATH), ".abcde");
-        Global.sortFile();
-        checkDB();
+        checkFile();
         vlcUtils = new VLCUtils(this);
 
         tabAdapter = new TabAdapter(getSupportFragmentManager());
@@ -100,6 +94,7 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
 
         setListener();
         setBtnLayout(HOME);
+        Log.d(TAG, "dd");
         viewPager.setOffscreenPageLimit(5);
 
         if (!vlcUtils.isInstalledVlc()) {
@@ -108,6 +103,16 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
 
         FontUtils.setGlobalFont(this, getWindow().getDecorView(), Global.NANUM);
         Userhabit.setViewPager(viewPager);
+    }
+
+    private void checkFile() {
+        Log.d(TAG, "sdcard = " + Global.SD_CARD_PATH);
+
+        Global.checkSDCardPath();
+
+        Global.searchAllFile(new File(Global.SD_CARD_PATH), ".abcde");
+        Global.sortFile();
+        checkDB();
     }
 
     private void setListener() {
@@ -293,11 +298,13 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
 
                 // MY_PERMISSION_REQUEST_STORAGE is an
                 // app-defined int constant
-
             } else {
-                // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+                Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_LONG).show();
                 init();
             }
+        } else {
+            Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_LONG).show();
+            init();
         }
     }
 
@@ -308,6 +315,7 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
             case MY_PERMISSION_REQUEST_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_LONG).show();
                     init();
 
                     // permission was granted, yay! do the
@@ -319,6 +327,8 @@ public class TabActivity extends FragmentActivity implements MineFragment.OnPlay
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                    finish();
                 }
                 break;
         }
