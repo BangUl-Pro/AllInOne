@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -41,7 +40,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, final int position) {
+    public void onBindViewHolder(final MainViewHolder holder, final int position) {
         holder.idView.setText(userEntities.get(position).getId());
         if (userEntities.get(position).getAccessable() == UserEntity.UNACCESSABLE) {
             holder.accessableSwitch.setChecked(false);
@@ -49,14 +48,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
             holder.accessableSwitch.setChecked(true);
         }
 
-        holder.accessableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.accessableSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 final int access;
-                if (isChecked)
+                if (holder.accessableSwitch.isChecked())
                     access = UserEntity.ACCESSABLE;
                 else
                     access = UserEntity.UNACCESSABLE;
+                Log.d(TAG, "바뀜?");
                 SocketManager.setAccessable(userEntities.get(position).getId(), access, new RequestListener.OnSetAccessable() {
                     @Override
                     public void onSuccess() {
